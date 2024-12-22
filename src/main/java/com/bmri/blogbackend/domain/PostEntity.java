@@ -14,18 +14,24 @@ import java.util.List;
 @Setter
 public class PostEntity extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    private Long id;
+    @Column(nullable = false, unique = true)
     private String title;
+
+    @Column(nullable = false)
+    @Lob
     private String content;
+
     private String category;
+
     @ElementCollection
     @CollectionTable(name = "post_tags", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "tag")
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private List<String> tags = new ArrayList<>();
-    private boolean published;
+
+    @Column(nullable = false)
+    private boolean published = false;
 
     public List<String> getTags() {
         return Collections.unmodifiableList(tags);
