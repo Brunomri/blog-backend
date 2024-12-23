@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
+
     Page<PostEntity> getByPublishedIsTrue(Pageable pageable);
 
     Optional<PostEntity> getByTitle(String title);
@@ -17,4 +18,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     Page<PostEntity> getByCategory(String category, Pageable pageable);
 
     Page<PostEntity> getByTagsContaining(String tag, Pageable pageable);
+
 }
