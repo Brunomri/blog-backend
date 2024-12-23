@@ -1,27 +1,32 @@
 package com.bmri.blogbackend.services.interfaces;
 
 import com.bmri.blogbackend.domain.PostEntity;
+import com.bmri.blogbackend.dtos.response.PostResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Optional;
-
 public interface PostService {
-    Page<PostEntity> getAllPosts(Pageable pageable);
 
-    Page<PostEntity> getAllByPublished(Boolean published, Pageable pageable);
+    Page<PostResponseDto> getAllPosts(Pageable pageable);
 
-    PostEntity getPostById(Long id);
+    Page<PostResponseDto> getAllByPublished(Boolean published, Pageable pageable);
 
-    PostEntity getPostByTitle(String title);
+    PostResponseDto getPostById(Long id);
 
-    Page<PostEntity> getPostsByCategory(String category, Pageable pageable);
+    PostResponseDto getPostByTitle(String title);
 
-    Page<PostEntity> getPostsByTag(String tag, Pageable pageable);
+    Page<PostResponseDto> getPostsByCategory(String category, Pageable pageable);
 
-    PostEntity createPost(PostEntity newPost);
+    Page<PostResponseDto> getPostsByTag(String tag, Pageable pageable);
 
-    Optional<PostEntity> updatePost(Long id, PostEntity updatedPost);
+    PostResponseDto createPost(PostEntity newPost);
+
+    PostResponseDto updatePost(Long id, PostEntity updatedPost);
+
+    PostResponseDto togglePublish(Long id, boolean publish);
+
+    PostResponseDto updateContent(Long id, String content);
 
     boolean deletePost(Long id);
+
 }
