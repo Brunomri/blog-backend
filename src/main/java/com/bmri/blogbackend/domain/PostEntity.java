@@ -44,4 +44,5 @@ public class PostEntity extends BaseEntity {
             this.tags = Collections.emptyList();
         }
     }
+
 }
