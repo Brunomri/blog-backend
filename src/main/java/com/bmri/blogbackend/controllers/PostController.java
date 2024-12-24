@@ -7,6 +7,7 @@ import com.bmri.blogbackend.services.interfaces.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +66,9 @@ public class PostController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostResponseDto> getPostById(
+            @PathVariable
+            @Positive(message = "Post ID must be a positive integer") Long id) {
         var postDto = postService.getPostById(id);
 
         if (postDto != null) {
@@ -126,7 +129,9 @@ public class PostController {
     }
 
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDto postUpdateDto) {
+    public ResponseEntity<PostResponseDto> updatePost(
+            @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
+            @Valid @RequestBody PostCreateDto postUpdateDto) {
         var updatedPost = postService.updatePost(id, PostMapper.toEntity(postUpdateDto));
 
         if (updatedPost != null) {
@@ -136,7 +141,9 @@ public class PostController {
     }
 
     @PatchMapping(value = "/{id}/publish", produces = "application/json")
-    public ResponseEntity<PostResponseDto> togglePublish(@PathVariable Long id, @RequestParam(value = "publish") boolean publish) {
+    public ResponseEntity<PostResponseDto> togglePublish(
+            @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
+            @RequestParam(value = "publish") boolean publish) {
         var updatedPost = postService.togglePublish(id, publish);
 
         if (updatedPost != null) {
@@ -146,7 +153,9 @@ public class PostController {
     }
 
     @PatchMapping(value = "/{id}/content", produces = "application/json")
-    public ResponseEntity<PostResponseDto> updateContent(@PathVariable Long id, @RequestBody String newContent) {
+    public ResponseEntity<PostResponseDto> updateContent(
+            @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
+            @RequestBody String newContent) {
         var updatedPost = postService.updateContent(id, newContent);
 
         if (updatedPost != null) {
@@ -156,7 +165,9 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deletePost(
+            @PathVariable
+            @Positive(message = "Post ID must be a positive integer") Long id) {
         var deleted = postService.deletePost(id);
 
         if (deleted) {
