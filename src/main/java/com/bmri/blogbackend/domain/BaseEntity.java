@@ -1,7 +1,6 @@
 package com.bmri.blogbackend.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,11 +17,11 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Getter
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
