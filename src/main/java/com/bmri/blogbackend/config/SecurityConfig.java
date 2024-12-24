@@ -26,7 +26,7 @@ public class SecurityConfig {
                                 "/v3/api-docs",
                                 "/api-docs/**",
                                 "/api-docs").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         return http.build();
