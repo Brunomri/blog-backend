@@ -24,8 +24,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDto> getAllByPublished(Boolean published, Pageable pageable) {
-        return PostMapper.toDto(postRepository.findAll(pageable));
+    public Page<PostResponseDto> getAllByPublished(boolean published, Pageable pageable) {
+        return PostMapper.toDto(postRepository.getByPublished(published, pageable));
     }
 
     @Override
