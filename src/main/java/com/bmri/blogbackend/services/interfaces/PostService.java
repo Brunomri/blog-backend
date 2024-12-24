@@ -9,7 +9,7 @@ public interface PostService {
 
     Page<PostResponseDto> getAllPosts(Pageable pageable);
 
-    Page<PostResponseDto> getAllByPublished(Boolean published, Pageable pageable);
+    Page<PostResponseDto> getAllByPublished(boolean published, Pageable pageable);
 
     PostResponseDto getPostById(Long id);
 
