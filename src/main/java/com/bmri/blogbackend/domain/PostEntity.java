@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -34,14 +33,14 @@ public class PostEntity extends BaseEntity {
     private boolean published = false;
 
     public List<String> getTags() {
-        return Collections.unmodifiableList(tags);
+        return new ArrayList<>(tags);
     }
 
     public void setTags(List<String> newTags) {
         if (newTags != null) {
-            this.tags = List.copyOf(newTags);
+            this.tags = new ArrayList<>(newTags);
         } else {
-            this.tags = Collections.emptyList();
+            this.tags = new ArrayList<>();
         }
     }
 
