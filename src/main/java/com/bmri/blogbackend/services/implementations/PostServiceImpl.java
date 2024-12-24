@@ -2,6 +2,7 @@ package com.bmri.blogbackend.services.implementations;
 
 import com.bmri.blogbackend.domain.PostEntity;
 import com.bmri.blogbackend.dtos.response.PostResponseDto;
+import com.bmri.blogbackend.exceptions.ObjectNotFoundException;
 import com.bmri.blogbackend.mappers.PostMapper;
 import com.bmri.blogbackend.repositories.PostRepository;
 import com.bmri.blogbackend.services.interfaces.PostService;
@@ -31,7 +32,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDto getPostById(Long id) {
         var postEntity = postRepository.findById(id);
-        return postEntity.map(PostMapper::toDto).orElse(null);
+        return postEntity.map(PostMapper::toDto).orElseThrow(() -> new ObjectNotFoundException("Post not found with ID = " + id));
     }
 
     @Override
@@ -57,51 +58,36 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDto updatePost(Long id, PostEntity updatedPost) {
-        var currentPost = postRepository.findById(id);
-        if (currentPost.isPresent()) {
-            var postEntity = currentPost.get();
+        var currentPost = getPostById(id);
 
-            postEntity.setTitle(updatedPost.getTitle());
-            postEntity.setContent(updatedPost.getContent());
-            postEntity.setCategory(updatedPost.getCategory());
-            postEntity.setTags(updatedPost.getTags());
-            postEntity.setPublished(updatedPost.isPublished());
+        currentPost.setTitle(updatedPost.getTitle());
+        currentPost.setContent(updatedPost.getContent());
+        currentPost.setCategory(updatedPost.getCategory());
+        currentPost.setTags(updatedPost.getTags());
+        currentPost.setPublished(updatedPost.isPublished());
 
-            return PostMapper.toDto(postRepository.save(postEntity));
-        }
-        return null;
+        return PostMapper.toDto(postRepository.save(PostMapper.toEntity(currentPost)));
     }
 
     @Override
     public PostResponseDto togglePublish(Long id, boolean publish) {
-        var currentPost = postRepository.findById(id);
-        if (currentPost.isPresent()) {
-            var postEntity = currentPost.get();
-            postEntity.setPublished(publish);
-            return PostMapper.toDto(postRepository.save(postEntity));
-        }
-        return null;
+        var currentPost = getPostById(id);
+        currentPost.setPublished(publish);
+        return PostMapper.toDto(postRepository.save(PostMapper.toEntity(currentPost)));
     }
 
     @Override
     public PostResponseDto updateContent(Long id, String content) {
-        var currentPost = postRepository.findById(id);
-        if (currentPost.isPresent()) {
-            var postEntity = currentPost.get();
-            postEntity.setContent(content);
-            return PostMapper.toDto(postRepository.save(postEntity));
-        }
-        return null;
+        var currentPost = getPostById(id);
+        currentPost.setContent(content);
+        return PostMapper.toDto(postRepository.save(PostMapper.toEntity(currentPost)));
     }
 
     @Override
     public boolean deletePost(Long id) {
-        var currentPost = postRepository.findById(id);
-        if (currentPost.isPresent()) {
-            postRepository.delete(currentPost.get());
-            return true;
-        }
-        return false;
+        var currentPost = getPostById(id);
+        postRepository.delete(PostMapper.toEntity(currentPost));
+        return true;
     }
 
 }

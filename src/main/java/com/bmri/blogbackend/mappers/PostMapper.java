@@ -17,6 +17,18 @@ public class PostMapper {
         return postEntity;
     }
 
+    public static PostEntity toEntity(PostResponseDto dto) {
+        var postEntity = new PostEntity();
+        postEntity.setId(dto.getId());
+        postEntity.setTitle(dto.getTitle());
+        postEntity.setContent(dto.getContent());
+        postEntity.setCategory(dto.getCategory());
+        postEntity.setTags(dto.getTags());
+        postEntity.setPublished(dto.isPublished());
+        postEntity.setCreatedAt(dto.getCreatedAt());
+        return postEntity;
+    }
+
     public static PostResponseDto toDto(PostEntity entity) {
         var postResponseDto = new PostResponseDto();
         postResponseDto.setId(entity.getId());
