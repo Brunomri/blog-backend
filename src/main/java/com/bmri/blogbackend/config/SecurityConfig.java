@@ -20,6 +20,13 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(toH2Console()).permitAll()
+                        .requestMatchers("/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/api-docs/**",
+                                "/api-docs").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         return http.build();
