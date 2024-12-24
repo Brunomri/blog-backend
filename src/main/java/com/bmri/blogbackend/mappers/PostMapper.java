@@ -19,11 +19,14 @@ public class PostMapper {
 
     public static PostResponseDto toDto(PostEntity entity) {
         var postResponseDto = new PostResponseDto();
+        postResponseDto.setId(entity.getId());
         postResponseDto.setTitle(entity.getTitle());
         postResponseDto.setContent(entity.getContent());
         postResponseDto.setCategory(entity.getCategory());
         postResponseDto.setTags(entity.getTags());
         postResponseDto.setPublished(entity.isPublished());
+        postResponseDto.setCreatedAt(entity.getCreatedAt());
+        postResponseDto.setUpdatedAt(entity.getUpdatedAt());
         return postResponseDto;
     }
 
