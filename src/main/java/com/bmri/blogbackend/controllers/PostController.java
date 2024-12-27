@@ -41,11 +41,7 @@ public class PostController {
             @Max(value = PAGE_MAX_SIZE, message = "Page size must be less than or equal to ${PAGE_MAX_SIZE}") int size
     ) {
         var postsPage = postService.getAllPosts(PageRequest.of(page, size));
-
-        if (postsPage != null) {
-            return ResponseEntity.ok().body(postsPage);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postsPage);
     }
 
     @GetMapping(value = "/published", produces = "application/json")
@@ -58,11 +54,7 @@ public class PostController {
             @Max(value = PAGE_MAX_SIZE, message = "Page size must be less than or equal to ${PAGE_MAX_SIZE}") int size
     ) {
         var postsPage = postService.getAllByPublished(published, PageRequest.of(page, size));
-
-        if (postsPage != null) {
-            return ResponseEntity.ok().body(postsPage);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postsPage);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -70,21 +62,13 @@ public class PostController {
             @PathVariable
             @Positive(message = "Post ID must be a positive integer") Long id) {
         var postDto = postService.getPostById(id);
-
-        if (postDto != null) {
-            return ResponseEntity.ok().body(postDto);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postDto);
     }
 
     @GetMapping(value = "/title", produces = "application/json")
     public ResponseEntity<PostResponseDto> getPostByTitle(@RequestParam(value = "title") String title) {
         var postDto = postService.getPostByTitle(title);
-
-        if (postDto != null) {
-            return ResponseEntity.ok().body(postDto);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postDto);
     }
 
     @GetMapping(value = "/category", produces = "application/json")
@@ -95,11 +79,7 @@ public class PostController {
             @Min(value = PAGE_MIN_SIZE, message = "Page size must be greater than or equal to ${PAGE_MIN_SIZE}")
             @Max(value = PAGE_MAX_SIZE, message = "Page size must be less than or equal to ${PAGE_MAX_SIZE}") int size) {
         var postDto = postService.getPostsByCategory(category, PageRequest.of(page, size));
-
-        if (postDto != null) {
-            return ResponseEntity.ok().body(postDto);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postDto);
     }
 
     @GetMapping(value = "/tag", produces = "application/json")
@@ -110,11 +90,7 @@ public class PostController {
             @Min(value = PAGE_MIN_SIZE, message = "Page size must be greater than or equal to ${PAGE_MIN_SIZE}")
             @Max(value = PAGE_MAX_SIZE, message = "Page size must be less than or equal to ${PAGE_MAX_SIZE}") int size) {
         var postDto = postService.getPostsByTag(tag, PageRequest.of(page, size));
-
-        if (postDto != null) {
-            return ResponseEntity.ok().body(postDto);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postDto);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -122,7 +98,7 @@ public class PostController {
         var newPost = postService.createPost(PostMapper.toEntity(postCreateDto));
 
         if (newPost != null) {
-            var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/posts/{id}").buildAndExpand(newPost.getId()).toUri();
+            var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPost.getId()).toUri();
             return ResponseEntity.created(uri).body(newPost);
         }
         return ResponseEntity.internalServerError().build();
@@ -133,11 +109,7 @@ public class PostController {
             @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
             @Valid @RequestBody PostCreateDto postUpdateDto) {
         var updatedPost = postService.updatePost(id, PostMapper.toEntity(postUpdateDto));
-
-        if (updatedPost != null) {
-            return ResponseEntity.ok().body(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(updatedPost);
     }
 
     @PatchMapping(value = "/{id}/publish", produces = "application/json")
@@ -145,11 +117,7 @@ public class PostController {
             @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
             @RequestParam(value = "publish") boolean publish) {
         var updatedPost = postService.togglePublish(id, publish);
-
-        if (updatedPost != null) {
-            return ResponseEntity.ok().body(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(updatedPost);
     }
 
     @PatchMapping(value = "/{id}/content", produces = "application/json")
@@ -157,23 +125,15 @@ public class PostController {
             @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
             @RequestBody String newContent) {
         var updatedPost = postService.updateContent(id, newContent);
-
-        if (updatedPost != null) {
-            return ResponseEntity.ok().body(updatedPost);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(updatedPost);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deletePost(
             @PathVariable
             @Positive(message = "Post ID must be a positive integer") Long id) {
-        var deleted = postService.deletePost(id);
-
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
