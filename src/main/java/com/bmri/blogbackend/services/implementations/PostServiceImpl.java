@@ -38,7 +38,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDto getPostByTitle(String title) {
         var postEntity = postRepository.getByTitle(title);
-        return postEntity.map(PostMapper::toDto).orElse(null);
+        return postEntity.map(PostMapper::toDto).orElseThrow(() -> new ObjectNotFoundException("Post not found with title = " + title));
     }
 
     @Override
@@ -60,10 +60,18 @@ public class PostServiceImpl implements PostService {
     public PostResponseDto updatePost(Long id, PostEntity updatedPost) {
         var currentPost = getPostById(id);
 
-        currentPost.setTitle(updatedPost.getTitle());
-        currentPost.setContent(updatedPost.getContent());
-        currentPost.setCategory(updatedPost.getCategory());
-        currentPost.setTags(updatedPost.getTags());
+        if (updatedPost.getTitle() != null) {
+            currentPost.setTitle(updatedPost.getTitle());
+        }
+        if (updatedPost.getContent() != null) {
+            currentPost.setContent(updatedPost.getContent());
+        }
+        if (updatedPost.getCategory() != null) {
+            currentPost.setCategory(updatedPost.getCategory());
+        }
+        if (updatedPost.getTags() != null) {
+            currentPost.setTags(updatedPost.getTags());
+        }
         currentPost.setPublished(updatedPost.isPublished());
 
         return PostMapper.toDto(postRepository.save(PostMapper.toEntity(currentPost)));

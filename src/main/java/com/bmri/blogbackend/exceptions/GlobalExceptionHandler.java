@@ -4,6 +4,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,11 +50,19 @@ public class GlobalExceptionHandler {
         return error;
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    StandardErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+    StandardErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return new StandardErrorResponse(formatter.format(LocalDateTime.now()), HttpStatus.BAD_REQUEST.value(),
+                e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    StandardErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return new StandardErrorResponse(formatter.format(LocalDateTime.now()), HttpStatus.CONFLICT.value(),
                 e.getClass().getName(), e.getMessage());
     }
 
@@ -62,6 +71,14 @@ public class GlobalExceptionHandler {
     @ResponseBody
     StandardErrorResponse handleObjectNotFoundException(ObjectNotFoundException e) {
         return new StandardErrorResponse(formatter.format(LocalDateTime.now()), HttpStatus.NOT_FOUND.value(),
+                e.getClass().getName(), e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    StandardErrorResponse handleGeneralException(Exception e) {
+        return new StandardErrorResponse(formatter.format(LocalDateTime.now()), HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 e.getClass().getName(), e.getMessage());
     }
 
