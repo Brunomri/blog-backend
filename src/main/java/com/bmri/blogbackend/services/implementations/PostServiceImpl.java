@@ -1,6 +1,6 @@
 package com.bmri.blogbackend.services.implementations;
 
-import com.bmri.blogbackend.domain.PostEntity;
+import com.bmri.blogbackend.dtos.request.PostCreateDto;
 import com.bmri.blogbackend.dtos.response.PostResponseDto;
 import com.bmri.blogbackend.exceptions.ObjectNotFoundException;
 import com.bmri.blogbackend.mappers.PostMapper;
@@ -52,12 +52,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto createPost(PostEntity newPost) {
-        return PostMapper.toDto(postRepository.save(newPost));
+    public PostResponseDto createPost(PostCreateDto newPost) {
+        return PostMapper.toDto(postRepository.save(PostMapper.toEntity(newPost)));
     }
 
     @Override
-    public PostResponseDto updatePost(Long id, PostEntity updatedPost) {
+    public PostResponseDto updatePost(Long id, PostCreateDto updatedPost) {
         var currentPost = getPostById(id);
 
         if (updatedPost.getTitle() != null) {
