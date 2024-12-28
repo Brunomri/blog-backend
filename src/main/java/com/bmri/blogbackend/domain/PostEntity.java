@@ -1,9 +1,7 @@
 package com.bmri.blogbackend.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class PostEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true)
@@ -33,7 +33,10 @@ public class PostEntity extends BaseEntity {
     private boolean published = false;
 
     public List<String> getTags() {
-        return new ArrayList<>(tags);
+        if (this.tags != null) {
+            return new ArrayList<>(tags);
+        }
+        return new ArrayList<>();
     }
 
     public void setTags(List<String> newTags) {

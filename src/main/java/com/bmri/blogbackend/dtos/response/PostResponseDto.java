@@ -1,5 +1,7 @@
 package com.bmri.blogbackend.dtos.response;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +10,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class PostResponseDto {
 
     private Long id;
