@@ -1,6 +1,6 @@
 package com.bmri.blogbackend.services.interfaces;
 
-import com.bmri.blogbackend.domain.PostEntity;
+import com.bmri.blogbackend.dtos.request.PostCreateDto;
 import com.bmri.blogbackend.dtos.response.PostResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +19,9 @@ public interface PostService {
 
     Page<PostResponseDto> getPostsByTag(String tag, Pageable pageable);
 
-    PostResponseDto createPost(PostEntity newPost);
+    PostResponseDto createPost(PostCreateDto newPost);
 
-    PostResponseDto updatePost(Long id, PostEntity updatedPost);
+    PostResponseDto updatePost(Long id, PostCreateDto updatedPost);
 
     PostResponseDto togglePublish(Long id, boolean publish);
 
