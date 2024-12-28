@@ -19,3 +19,10 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: false
+
+logging:
+  level:
+    com.bmri.blogbackend: debug
+    root: info
+  file:
+    name: logs/application.log
