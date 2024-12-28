@@ -2,7 +2,6 @@ package com.bmri.blogbackend.controllers;
 
 import com.bmri.blogbackend.dtos.request.PostCreateDto;
 import com.bmri.blogbackend.dtos.response.PostResponseDto;
-import com.bmri.blogbackend.mappers.PostMapper;
 import com.bmri.blogbackend.services.interfaces.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -95,7 +94,7 @@ public class PostController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody PostCreateDto postCreateDto) {
-        var newPost = postService.createPost(PostMapper.toEntity(postCreateDto));
+        var newPost = postService.createPost(postCreateDto);
 
         if (newPost != null) {
             var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newPost.getId()).toUri();
@@ -108,7 +107,7 @@ public class PostController {
     public ResponseEntity<PostResponseDto> updatePost(
             @PathVariable @Positive(message = "Post ID must be a positive integer") Long id,
             @Valid @RequestBody PostCreateDto postUpdateDto) {
-        var updatedPost = postService.updatePost(id, PostMapper.toEntity(postUpdateDto));
+        var updatedPost = postService.updatePost(id, postUpdateDto);
         return ResponseEntity.ok().body(updatedPost);
     }
 
