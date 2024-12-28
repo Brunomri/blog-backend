@@ -8,38 +8,18 @@ import org.springframework.data.domain.Page;
 public class PostMapper {
 
     public static PostEntity toEntity(PostCreateDto dto) {
-        var postEntity = new PostEntity();
-        postEntity.setTitle(dto.getTitle());
-        postEntity.setContent(dto.getContent());
-        postEntity.setCategory(dto.getCategory());
-        postEntity.setTags(dto.getTags());
-        postEntity.setPublished(dto.isPublished());
-        return postEntity;
+        return new PostEntity(dto.getTitle(), dto.getContent(), dto.getCategory(), dto.getTags(), dto.isPublished());
     }
 
     public static PostEntity toEntity(PostResponseDto dto) {
-        var postEntity = new PostEntity();
+        var postEntity = new PostEntity(dto.getTitle(), dto.getContent(), dto.getCategory(), dto.getTags(), dto.isPublished());
         postEntity.setId(dto.getId());
-        postEntity.setTitle(dto.getTitle());
-        postEntity.setContent(dto.getContent());
-        postEntity.setCategory(dto.getCategory());
-        postEntity.setTags(dto.getTags());
-        postEntity.setPublished(dto.isPublished());
-        postEntity.setCreatedAt(dto.getCreatedAt());
         return postEntity;
     }
 
     public static PostResponseDto toDto(PostEntity entity) {
-        var postResponseDto = new PostResponseDto();
-        postResponseDto.setId(entity.getId());
-        postResponseDto.setTitle(entity.getTitle());
-        postResponseDto.setContent(entity.getContent());
-        postResponseDto.setCategory(entity.getCategory());
-        postResponseDto.setTags(entity.getTags());
-        postResponseDto.setPublished(entity.isPublished());
-        postResponseDto.setCreatedAt(entity.getCreatedAt());
-        postResponseDto.setUpdatedAt(entity.getUpdatedAt());
-        return postResponseDto;
+        return new PostResponseDto(entity.getId(), entity.getTitle(), entity.getContent(), entity.getCategory(),
+                entity.getTags(), entity.isPublished(), entity.getCreatedAt(), entity.getUpdatedAt());
     }
 
     public static Page<PostResponseDto> toDto(Page<PostEntity> entities) {
