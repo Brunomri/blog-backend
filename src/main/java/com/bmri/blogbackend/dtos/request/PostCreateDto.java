@@ -2,11 +2,13 @@ package com.bmri.blogbackend.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class PostCreateDto {
 
     @NotBlank(message = "Title is mandatory")
