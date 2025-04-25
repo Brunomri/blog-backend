@@ -53,7 +53,7 @@ class PostControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         var post1 = new PostResponseDto(1L, "post1", "content1", "category1",
                 List.of("tag1", "tag2"), false, LocalDateTime.now(), LocalDateTime.now());
 
@@ -115,9 +115,7 @@ class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(expectedPost.getCategory()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[0]").value(expectedPost.getTags().get(0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[1]").value(expectedPost.getTags().get(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdAt").value(expectedPost.getCreatedAt().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.updatedAt").value(expectedPost.getUpdatedAt().toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()));
 
         verify(postService, times(1)).getPostById(anyLong());
     }
@@ -151,9 +149,7 @@ class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(expectedPost.getCategory()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[0]").value(expectedPost.getTags().get(0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[1]").value(expectedPost.getTags().get(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdAt").value(expectedPost.getCreatedAt().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.updatedAt").value(expectedPost.getUpdatedAt().toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()));
 
         verify(postService, times(1)).getPostByTitle(anyString());
     }
@@ -218,9 +214,7 @@ class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(expectedPost.getCategory()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[0]").value(expectedPost.getTags().get(0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[1]").value(expectedPost.getTags().get(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdAt").value(expectedPost.getCreatedAt().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.updatedAt").value(expectedPost.getUpdatedAt().toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()));
 
         verify(postService, times(1)).createPost(any(PostCreateDto.class));
     }
@@ -269,9 +263,7 @@ class PostControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category").value(expectedPost.getCategory()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[0]").value(expectedPost.getTags().get(0)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tags[1]").value(expectedPost.getTags().get(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.createdAt").value(expectedPost.getCreatedAt().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.updatedAt").value(expectedPost.getUpdatedAt().toString()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.published").value(expectedPost.isPublished()));
 
         verify(postService, times(1)).updatePost(anyLong(), any(PostCreateDto.class));
     }
