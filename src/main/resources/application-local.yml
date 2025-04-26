@@ -1,14 +1,12 @@
 spring:
-  # Connect to a MySQL database
+  # Connect to a database
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     # Environment variables for database URL, username and password
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PWD}
 
   jpa:
-    database: mysql
     hibernate:
       # Update database schema if necessary
       ddl-auto: update
