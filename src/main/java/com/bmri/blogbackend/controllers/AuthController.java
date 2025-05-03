@@ -22,7 +22,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequest) {
         return userRepository.findByUsername(loginRequest.getUsername())
                 .filter(user -> PasswordEncoderUtils.matches(loginRequest.getPassword(), user.getPassword()))
-                .map(user -> ResponseEntity.ok(new JwtResponseDto(jwtUtils.generateToken(user.getUsername()))))
+                .map(user -> ResponseEntity.ok(new JwtResponseDto(jwtUtils.generateToken(user.getUsername(), user.role))))
                 .orElseGet(() -> ResponseEntity.status(401).body(new JwtResponseDto("Invalid credentials")));
     }
 }

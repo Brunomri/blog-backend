@@ -1,11 +1,14 @@
 package com.bmri.blogbackend.config;
 
+import com.bmri.blogbackend.enums.Role;
 import com.bmri.blogbackend.utils.JwtAuthenticationFilter;
 import com.bmri.blogbackend.utils.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,24 +24,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers(toH2Console())
-                        .disable()
-                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(toH2Console()).permitAll()
-                        .requestMatchers("/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs",
-                                "/api-docs/**",
-                                "/api-docs",
-                                "/login",
-                                "/posts/all").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.POST).hasRole(Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.PUT).hasRole(Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.PATCH).hasRole(Role.ADMIN.toString())
+                        .requestMatchers(HttpMethod.DELETE).hasRole(Role.ADMIN.toString())
                         .anyRequest().authenticated()
                 )
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         return http.build();
     }
 
