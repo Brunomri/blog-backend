@@ -1,10 +1,7 @@
 package com.bmri.blogbackend.domain;
 
 import com.bmri.blogbackend.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,6 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Table(name = "users")
 public class UserEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true)
