@@ -54,11 +54,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public PostResponseDto createPost(PostCreateDto newPost) {
         return PostMapper.toDto(postRepository.save(PostMapper.toEntity(newPost)));
     }
 
     @Override
+    @Transactional(readOnly = false)
     public PostResponseDto updatePost(Long id, PostCreateDto updatedPost) {
         var currentPost = getPostById(id);
 
@@ -80,6 +82,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public PostResponseDto togglePublish(Long id, boolean publish) {
         var currentPost = getPostById(id);
         currentPost.setPublished(publish);
@@ -87,6 +90,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public PostResponseDto updateContent(Long id, String content) {
         var currentPost = getPostById(id);
         currentPost.setContent(content);
@@ -94,6 +98,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean deletePost(Long id) {
         var currentPost = getPostById(id);
         postRepository.delete(PostMapper.toEntity(currentPost));

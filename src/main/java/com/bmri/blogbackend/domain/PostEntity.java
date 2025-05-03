@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Table(name = "posts")
 public class PostEntity extends BaseEntity {
 
     @Column(nullable = false, unique = true)
